@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .upload-box {
+            text-align: center;
+            padding: 20px;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+
+        .upload-box input[type="file"] {
+            display: none;
+        }
+
+        .upload-box label {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .upload-box label:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="upload-box">
+        <form>
+            <input type="file" id="imageUpload" accept=".gif, .jpg, .png">
+            <label for="imageUpload">Choose an Image</label>
+        </form>
+    </div>
+</body>
+
+</html>
