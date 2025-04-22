@@ -58,6 +58,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'adspanel.wsgi.application'
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Database
 
