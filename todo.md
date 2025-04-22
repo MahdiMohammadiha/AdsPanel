@@ -1,5 +1,6 @@
 <div style="text-align: right; direction: rtl;">
 
+
 # لیست کارها
 
 ## رفع باگ
@@ -12,6 +13,7 @@
 
 
 ## یادداشت‌ها
+- در settings.py: تمام هاست ها مجاز شدند
 
 
 </div>
