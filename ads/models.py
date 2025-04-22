@@ -41,4 +41,6 @@ class Ad(models.Model):
     services = models.ManyToManyField(Service, verbose_name="سرویس‌ها", related_name="ads")
 
     def __str__(self):
-        return f"{self.title} - {self.description[:30]}"
+        status = "فعال" if self.is_active else "غیرفعال"
+        description_preview = self.description[:30] + "..." if len(self.description) > 30 else self.description
+        return f"{self.title} ({status}) - {description_preview}"
