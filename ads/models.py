@@ -12,7 +12,14 @@ def validate_image_extension(value):
 
 
 def ad_upload_path(instance, filename):
-    return f"ads/images/{filename}_{instance.uuid}"
+    return f"ads/images/{instance.uuid}_{filename}"
+
+
+class Service(models.Model):
+    title = models.CharField(max_length=256, verbose_name="عنوان سرویس")
+
+    def __str__(self):
+        return self.title
 
 
 class Ad(models.Model):
@@ -30,6 +37,8 @@ class Ad(models.Model):
     title = models.CharField(max_length=256, verbose_name="عنوان تبلیغ")
     link = models.URLField(verbose_name="لینک تبلیغ")
     description = models.TextField(max_length=256, verbose_name="توضیحات تبلیغ")
+    is_active = models.BooleanField(default=True, verbose_name="فعال")
+    services = models.ManyToManyField(Service, verbose_name="سرویس‌ها", related_name="ads")
 
     def __str__(self):
         return f"{self.title} - {self.description[:30]}"
