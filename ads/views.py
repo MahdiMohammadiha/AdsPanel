@@ -10,6 +10,10 @@ def index(request):
     return render(request, "index.html")
 
 
+def ads_preview(request):
+    return render(request, "ads-preview.html")
+
+
 class AdList(generics.ListAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdSerializer

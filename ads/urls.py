@@ -1,9 +1,11 @@
 from django.urls import path
-from .views import index, AdList, AdDetail, AdsByService
+from .views import index, ads_preview, AdList, AdDetail, AdsByService
 
 urlpatterns = [
     # Upload image template temporary disabled
     # path("", index, name="index"),
+
+    path("preview/", ads_preview, name="ads_preview"),
     
     path("list/", AdList.as_view(), name="ads-list"),
     path("list/<int:service_id>/", AdsByService.as_view(), name="ads-by-service"),
