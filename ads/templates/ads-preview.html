@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ad Slider - Multi Source</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fafafa;
+        }
+
+        header {
+            background-color: #3042a7;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .slider-container {
+            position: relative;
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 5px;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+            min-height: 200px;
+            overflow: hidden;
+        }
+
+        .ad-banner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.7s ease;
+        }
+
+        .ad-banner.visible {
+            opacity: 1;
+        }
+
+        .ad-banner img {
+            max-width: 100%; /* تصویر 70 درصد از عرض باکس را می‌گیرد */
+            margin: 0 auto; /* مرکز کردن تصویر */
+            display: block; /* برای اطمینان از مرکز بودن */
+            border-radius: 10px 10px 0px 0px; /* حفظ گوشه‌های گرد */
+        }
+
+        .ad-banner h3 {
+            margin: 0 0 8px 0;
+            color: #333;
+        }
+
+        .ad-banner p {
+            margin: 0 0 10px;
+            color: #666;
+        }
+
+        .ad-banner a {
+            color: #4CAF50;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .slider-wrapper {
+                display: flex;
+                justify-content: space-between;
+                gap: 20px;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .slider-container {
+                flex: 1;
+                max-width: 30%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Welcome to Our Landing Page</h1>
+    </header>
+
+    <div class="slider-wrapper">
+        <!-- Section 1 -->
+        <div class="slider-container">
+            <div class="ad-banner" id="ad-banner-1">
+                <p>Loading ad 1...</p>
+            </div>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="slider-container">
+            <div class="ad-banner" id="ad-banner-2">
+                <p>Loading ad 2...</p>
+            </div>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="slider-container">
+            <div class="ad-banner" id="ad-banner-3">
+                <p>Loading ad 3...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <h2>About Us</h2>
+        <p>This is a sample landing page with multiple dynamic advertisement sliders.</p>
+    </div>
+
+    <script>
+        function createAdSlider(endpoint, containerId, interval = 5000) {
+            let index = 0;
+            let ads = [];
+
+            async function fetchAds() {
+                try {
+                    const response = await fetch(endpoint);
+                    ads = await response.json();
+
+                    if (ads.length === 0) {
+                        document.getElementById(containerId).innerHTML = '<p>No ads available.</p>';
+                        return;
+                    }
+
+                    showAd(index);
+
+                    if (ads.length > 1) {
+                        setInterval(() => {
+                            index = (index + 1) % ads.length;
+                            showAd(index);
+                        }, interval);
+                    }
+
+                } catch (err) {
+                    console.error(`Error loading ads from ${endpoint}:`, err);
+                    document.getElementById(containerId).innerHTML = '<p>Failed to load advertisement.</p>';
+                }
+            }
+
+            function showAd(i) {
+                const banner = document.getElementById(containerId);
+                banner.classList.remove('visible');
+
+                setTimeout(() => {
+                    const ad = ads[i];
+                    const shortDescription = ad.description.length > 70 
+                        ? ad.description.substring(0, 70) + '...' 
+                        : ad.description;
+
+                    banner.innerHTML = `
+                        <div style="cursor: pointer;" onclick="window.open('${ad.link}', '_blank')">
+                            <img src="${ad.image}" alt="Ad Image">
+                            <div>
+                                <p>${shortDescription}</p>
+                            </div>
+                        </div>`;
+                    banner.classList.add('visible');
+                }, ads.length > 1 ? 300 : 0);
+            }
+
+            fetchAds();
+        }
+
+
+        // Create three separate sliders
+        createAdSlider('http://127.0.0.1:8000/api/ads/list/1/', 'ad-banner-1');
+        createAdSlider('http://127.0.0.1:8000/api/ads/list/2/', 'ad-banner-2');
+        createAdSlider('http://127.0.0.1:8000/api/ads/list/3/', 'ad-banner-3');
+    </script>
+</body>
+
+</html>
